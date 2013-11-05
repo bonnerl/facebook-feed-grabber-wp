@@ -1,14 +1,21 @@
 <?php
+/**
+ * FFG Widgets.
+ * 
+ * @package Facebook_Feed_Grabber
+ * @since 0.9.0
+ */
+
 
 /**
- * new WordPress Widget format
- * Wordpress 2.8 and above
+ * The ffg widget.
+ * 
  * @see http://codex.wordpress.org/Widgets_API#Developing_Widgets
  */
-class ffg_Widget extends WP_Widget {
-	
+class ffg_Widget extends WP_Widget 
+{	
 	protected $instance = array();
-	
+
 	static $defaults = array(
 		'feed' => 'default_feed',
 		'num_entries' => 'num_entries',
@@ -16,6 +23,18 @@ class ffg_Widget extends WP_Widget {
 		'limit' => 'limit',
 		'show_thumbnails' => 'show_thumbnails',
 	);
+
+	
+	/**
+	 * Register widget with WordPress.
+	 */
+	function __construct() {
+		parent::__construct(
+			'facebook_feed_grabber', // Base ID
+			'Facebook Feed Grabber', // Name
+			array( 'classname' => 'fb-feed', 'description' => __( 'Displays a public Facebook feed.' ), ) // Args
+		);
+	}
 	
 	
 	/**
@@ -26,7 +45,7 @@ class ffg_Widget extends WP_Widget {
 	public static function get_defaults(  ) {
 		global $ffg_setup;
 		
-		$options = $ffg_setup->get_options('ffg_options');
+		$options = ffg_base::get_options('ffg_options');
 		
 		foreach( self::$defaults as $key => $value) {
 			$defaults[$key] = $options[$value];
@@ -46,7 +65,7 @@ class ffg_Widget extends WP_Widget {
 		$this->get_defaults();
 		
 		$widget_ops = array(
-			'classname' => 'ffg_widget',
+			'classname' => 'widget fb-feed',
 			'description' => 'Display a Facebook feed.'
 		);
 		
@@ -63,7 +82,11 @@ class ffg_Widget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args, EXTR_SKIP );
 		
+		// Get the feed ID if it's there.
 		$feed = ( isset($instance['feed']) ) ? $instance['feed'] : null;
+
+		// Dispable the plugin container. 
+		$instance['container'] = array( 'name' => null );
 		
 		echo $before_widget;
 
@@ -188,7 +211,7 @@ class ffg_Widget extends WP_Widget {
 	    if( 'widgets.php' != $hook )
 	        return;
 	
-	    wp_enqueue_script( 'ffg-widget-admin', plugins_url('/js/ffg-widget-options.js', __FILE__) );
+	    wp_enqueue_script( 'ffg-widget-admin', plugins_url('/admin/js/ffg-widget-options.js', __FILE__) );
 		
 		// We need to feed some stuff to our script
 		// This allows us to pass PHP variables to the Javascript code. We can pass multiple vars in the array.

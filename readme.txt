@@ -1,9 +1,10 @@
 === Facebook Feed Grabber ===
+* changed format_date() to use WP's function human_time_diff().
 Contributors: bonnerl
 Donate link: http://www.lucasbonner.com/redirect/donate/facebook-feed-grabber/
 Tags: Facebook, Social Networking
-Requires at least: 3.3
-Tested up to: 3.6
+Requires at least: 3.0
+Tested up to: 3.6.1
 Stable tag: 0.8.2
 License: GPLv2 or Later
 
@@ -13,20 +14,29 @@ Allows you to display the feed of a public page or profile on your website. Requ
 
 Retrieve the feed of a *public* Facebook page or profile using the Facebook Graph API and the Facebook PHP SDK. You will need to have or create a Facebook application to use this plugin as it is required to use their graph api.
 
-The options let you define a default feed that is used anywhere you call the plugin. You may also specify specific feeds to display in different areas.
+= Features =
+
+* Display 1 or more public Facebook feed from any combination of widgets, shortcode or directly in your theme's PHP.
+* Control the number of entries to display.
+* Lets you choose to show the feed title.
+* Lets you limit to items posted by the feed owner.
+* Enable or disable the display of thumbnails.
+* Lets you cache the feed to reduce server load.
+* Provides a basic style sheet that uses your font/color settings; you can also make your own custom style sheet.
+* Allows you to access FB through a Proxy.
 
 = Ways to Use =
 
-* **Widget** Display a feed using a widget.
-* **Shortcode** Display a feed in a post or page using the shortcode tag `[fb_feed]`.
-* **PHP Direct Use** Display a feed anywhere in your theme by adding `<?php fb_feed() ?>` where you wish the feed to be displayed.
+* **Widget** | Display a feed using a widget.
+* **Shortcode** | Display a feed in a post or page using the shortcode tag `[fb_feed]`.
+* **In Your Theme's PHP** | Display a feed anywhere in your theme by adding `<?php fb_feed() ?>` where you wish the feed to be displayed.
 
 == Installation ==
 
-1. Upload `facebook-feed-grabber/` to the `/wp-content/plugins/` directory.
+1. Install the Custom Facebook Feed either via the WordPress plugin directory, or by uploading the files to your web server (in the `/wp-content/plugins/` directory).
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to the Facebook Feed Grabber options page and enter your Facebook App Id and Secret. If don't have a Facebook App then head on over to the [Facebook Developers App](https://developers.facebook.com/apps "Facebook Developers") page and create one.
-4. Set your default page id and any other settings you wish to adjust.
+3. Go to the Facebook Feed Grabber options page and enter your Facebook App Id and Secret. If don't have a Facebook App then refer to the plugin's [FAQ](http://wordpress.org/plugins/facebook-feed-grabber/faq/) page for more help.
+4. Set your default feed id and any other settings you wish to adjust. If you don't know your feed's id then refer to the plugin's [FAQ](http://wordpress.org/plugins/facebook-feed-grabber/faq/) page for more help.
 
 = Ways to Display the Feed =
 
@@ -36,55 +46,45 @@ To display the default feed using the other default settings do any of the follo
 * **Shortcode** Add the shortcode tag `[fb_feed]` to any page or post to display the feed from within that page/post.
 * **PHP Direct Use** Display a feed anywhere in your theme by adding `<?php fb_feed() ?>` where you wish the feed to be displayed.
 
-= Advanced Usage =
+= Feed Settings =
 
-If you need to display one or more feeds in different locations and you need to vary the settings for each instance this section is for you. Don't let the term "Advanced Usage" scare you.
+If you are displaying more then one feed and want different settings for each feed then the following settings can be adjusted for widgets and shortcode instances.
 
-The following are settings that can be changed for each feed you display. (Currently not available for the widgets)
+* **feed_id**=*string* ~ The feed username or id.
+* **limit**=*boolean* ~ Whether to limit the feed to posts by the feed author. Pass 1 for true or 0 for false.
+* **num_entries**=*int* ~ Limits the number of entries displayed. 
+* **show_title**=*boolean* ~ Whether to show the Facebook page title before the feed. Pass 1 for true or 0 for false when using the `[fb_feed]` shortcode tag.
+* **show_thumbnails**=*boolean* ~ Show thumbnails when available. Pass 1 for true or 0 for false when using the `[fb_feed]` shortcode tag.
 
-* **cache_feed** - *int* ~ The number of minutes to cache the feed for. 
-	>Defaults to the value of "Cache Feed" from the plugin's options page.
-	
-* **container** - *string* ~ The element to wrap the feed items in. If NULL then no container is used.
-	>Defaults to *'div'*.
-	
-* **container_id** - *string* ~ The ID of the container element. If left empty or contains 0 then no container ID will be set.
-	>Defaults to *'fb-feed'*.
-	
-* **container_class** - *string* ~ The class of the container element. If left empty or contains 0 then container class will be set. 
-	>Defaults to *'fb-feed'*.
-	
-* **limit** - *boolean* ~ Whether to limit the feed to posts by the feed author. Pass 1 for true or 0 for false when using the `[fb_feed]` shortcode. 
-	>Defaults to the value of "Limit to Posts From Feed" from the plugin's options page.
-	
-* **echo** - *boolean* ~ Echo the results when true else it returns the results. Only works when calling `fb_feed()` in PHP.
-	>Defaults to *true*.
-	
-* **maxitems => $options['num_entries']** - *int* ~ Limits the number of entries displayed. 
-	>Defaults to the value of "Number of Entries" from the plugin's options page.
-	
-* **show_title** - *boolean* ~ Whether to show the Facebook page title before the feed. Pass 1 for true or 0 for false when using the `[fb_feed]` shortcode tag.
-	>Defaults to *true*.
+See below for examples.
 
-Arguments can be passed to `fb_feed($feed_id, $args)` as an array in $args or as key=value pairs in the [fb_feed] shortcode tag. For examples keep reading.
+= Shortcode Examples =
 
-= Examples =
+To display a feed with the default settings in a post or page,
+`[fb_feed]`
 
-To display the feed defined on the options page in a post or page without the page title use,
+To display a feed changing the Show Title option,
 `[fb_feed show_title=1]`
 
-To do the same in a template file use,
-`<?php fb_feed( null, array('show_title' => false) ); ?>`
+To display a feed not defined on the options page and to change the number of entries to show to 6 use the following,
+`[fb_feed num_entries=6]101359869934470[/fb_feed]`
 
-To display a feed not defined on the options page, change the max number of entries to show to 6 and change the container ID use the following,
-`[fb_feed container_id='facebook-feed' maxitems=6]101359869934470[/fb_feed]`
+= PHP Example =
 
-To do the same in a template file use,
-`<?php fb_feed( '101359869934470', array('container_id' => 'facebook-feed', 'maxitems' => 6) ); ?>`
+You can use the PHP function `fb_feed()` in a theme file to display a feed.
 
-If you are going to show more that one feed in a template file I suggest doing something like the following,
+To display a feed with the default settings,
+`<?php fb_feed(); ?>`
+
+To display a feed changing the Show Title option,
+`<?php fb_feed(null, array('show_title' => '1')); ?>`
+
+To display a feed not defined on the options page and to change the number of entries to show to 6 use the following,
+`<?php fb_feed( '101359869934470', array('num_entries' => 6) ); ?>`
+
+If you are going to show more that one feed in a template file and have some PHP knowledge I suggest doing something more like the following,
 `<?php
-// Call the class to make the initial connection.
+// Call the ffg class to make the initial connection.
 $facebook = new ffg();
 
 // Display the first feed using all default settings
@@ -99,21 +99,51 @@ $facebook->feed('101359869934470', array('container_id'=>'fb-feed-2'));
 
 = How do I get a Facebook App ID & Secret? =
 
-First you will need a [Facebook](http://www.facebook.com) account, then you must register as a Facebook Developer at [www.facebook.com/developers/apps.php](https://www.facebook.com/developers/apps.php "Facebook Developer Apps") where you can then create your Facebook application. After you create your application you will be given and App ID and Secret.
+To get a Facebook App ID & Secret you will need to,
 
-= How do I find the ID to access my page or profile? =
+* Have an active [Facebook](http://www.facebook.com) account.
+* Register as as a [Facebook Developer](https://www.facebook.com/developers/apps.php "Facebook Developer Apps").
+* [Create](https://developers.facebook.com/apps) your Facebook application using the "Create New App" button in the upper right area.
 
-One way is to go to one of the photo albums from your Facebook page or profile and look at the URL. For example here is the profile pictures album for Rehema Ministries Facebook page.
-* [Wordpress](https://www.facebook.com/photo.php?fbid=101360063267784&set=a.101360059934451.1955.101359869934470&type=1&theater "Rehema Ministries dba/In Step Foundation, Kenya")
-Notice in the 'set' variable of that link the last set of numbers after the last period. In this case those numbers are '101359869934470'. That should be the id of your page or profile.
+After you create your application you will be given an App ID and Secret.
+
+= What settings should I use for my new Facebook App? =
+
+Below are some suggested settings for when you create your Facebook App. I (the plugin developer) can't guaranty these for all cases.
+
+Use an App Name and Category that best fits your case. 
+
+* **App Namespace** = This isn't required except in special circumstances beyond this plugin.
+* **Sandbox Mode** = Off/Disabled
+* **App Domains** = This should be the domain name or subdomain you will be using the plugin on. You can specify more then one if needed.
+
+Those are the settings that you must adjust to use the plugin. Below are some suggested aditional changes.
+
+* Settings > Advanced > **Server IP Whitelist** = If your server has one or more static IP addresses I suggest listing them here.
+* Settings > Advanced > **Update Settings IP Whitelist** = If your server has one or more static IP addresses I suggest listing them here.
+* Settings > Advanced > **Install Insights** = I suggest disabling this to tighten up on Privacy *(does that exist with the NSA's current activity?)* unless you know what it is and will be using it.
+* Settings > Advanced > **Mobile SDK Insights** = I suggest disabling this unless you know what it is and will be using it.
+
+= How do I find my feed's ID? =
+
+**Page Feed**
+
+If you're the admin of the page then you can find the page id by,
+
+* Going to the page.
+* Click "Edit Page" followed by "Update Page Info" from the drop down.
+* Scroll to the bottom and locate "Facebook Page ID".
+* The feed ID is the grayed out number to the right.
+
+Alternatively if you're on the page or users profile turn your attention to the url. If the URL looks like this: *www.facebook.com/Your_Page_Name* then the Page ID is just Your_Page_Name. If your page URL is structured like this: *www.facebook.com/pages/Your_Page_Name/123654123654123*) then the Page ID is actually the number at the end, so in this case *123654123654123*.
 
 = Why isn't my feed displaying anything? =
 
-My first guess is that your content isn't set to be public or you haven't provided a valid Facebook page id.
+My first guess is that your content isn't set to be public or you haven't provided a valid Facebook ID.
 
 = Why do I get a "PHP Fatal error:  Uncaught OAuthException: Invalid OAuth access token signature." =
 
-Because you have either supplied an invalid App Id & Secret combo or you're trying to access something you don't have permissions for.
+Because you have either supplied an invalid App Id & Secret combo or you're trying to access something (like a feed) that you don't have permissions for.
 
 == Screenshots ==
 
@@ -121,14 +151,22 @@ Because you have either supplied an invalid App Id & Secret combo or you're tryi
 
 == Changelog ==
 
-= 0.9 =
+= 0.9.0 =
+* Improved flexibility of the default feed field to accept usernames and feed urls. I also now displays the feed name on the options page.
+* Updated HTML markup to better utilize HTML5 semantics. 
 * Improved Widget feed control. 
+* Improved the organization of the options.
 * Fixed failure to turn urls into clickable links in post message.
 * Changed the locale option to retrieve a list of locales via CURL instead of allow_url_fopen.
-* Improved App credential validation.
+* Improved App credential validation. (Added validation when the options page is loaded).
 * Improved options upgradability.
+* Changed the options page javascript to use Backbone.js and jQuery.
 * Moved ffg setup class and hooks to it's own file (ffg-setup.php).
-* Improved some inline documentation to better match the WP PHPDoc standards.
+* Moved admin files to an 'admin' folder.
+* Improved inline documentation to better match the [WP PHP Documentation Standards](http://make.wordpress.org/core/handbook/inline-documentation-standards/php-documentation-standards/#5-inline-comments).
+* Improved text localization.
+* Changed the ffg_cache class to be based on static methods and properties.
+* changed format_date() to use WP's function human_time_diff().
 
 = 0.8.2 =
 * Removed call time pass-by-reference for compatibility with PHP 5.4.
@@ -166,7 +204,7 @@ Because you have either supplied an invalid App Id & Secret combo or you're tryi
 
 = 0.5.2 =
 * Fixed bug. The page link displayed before the feed had an invalid link due to getting the page name instead of the page id.
-* Changed some varible name to make more sense for those looking at the code.
+* Changed some variable name to make more sense for those looking at the code.
 * Improved the documentation a little.
 * Special thanks to Randy Martinsen for bringing the bug and documentation issues to light.
 
@@ -194,10 +232,16 @@ Because you have either supplied an invalid App Id & Secret combo or you're tryi
 
 == Upgrade Notice ==
 
-= 0.9 =
+= 0.9.0 =
+* Notice: Revised how container arguments are passed through. Please see the inline documentation in facebook-feed-grabber/facebook.php if you custimized the container.
+* Notice: Updated the HTML to better utilize HTML5 sementics. This may effect any custom stylesheets.
 * Improved the amount of control a widget has over the feed it displays.
 * Fixed failure to turn urls into clickable links in post message.
-* Changed the locale option to retrieve a list of locales via CURL instead of allow_url_fopen.
+* Changed the locale option to retrieve a list of Facebook locales via CURL instead of allow_url_fopen.
+* Improved the organization of the options.
+* Improved plugin text localization. (Feedback desired if you're utilizing localization.)
+* Improved flexibility of the default feed field to accept usernames and feed urls. I also now displays the feed name on the options page.
+
 
 = 0.8.2 =
 * Removed call time pass-by-reference for compatibility with PHP 5.4.
