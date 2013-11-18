@@ -3,7 +3,7 @@
  * Settup things for the plugin.
  * 
  * @package Facebook_Feed_Grabber
- * @since 0.9.0
+ * @since 0.8.3
  */
 
 
