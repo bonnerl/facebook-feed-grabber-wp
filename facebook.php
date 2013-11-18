@@ -359,8 +359,9 @@ class ffg {
 		if ( ! $event )
 			return false;
 
-		$output = "<a href='". $event_url ."' class='the_link' target='_blank'>". $event['name'] ."</a>\n";
-		$output .= "<small>". $this->format_date($event['start_time'], 'event') ."</small>\n";
+		$output = "<p><a href='". $event_url ."' class='the_link' target='_blank'>". $event['name'] ."</a></p>\n";
+		$output .= "<p><small class='caption'>". $this->format_date($event['start_time'], 'event') ."</small></p>\n";
+		$output .= "<p><small>". $event['location'] ."</small></p>\n";
 
 		return $output;
 	}
@@ -586,20 +587,23 @@ class ffg {
 					if ( isset($item['link']) || $descript != null || $properties != null ) {
 						
 						$output .= "<blockquote>\n";
-						
-							$output .= "<p>\n";
-							
+
+							if ( ($show_thumbnails != false && isset($item['picture'])) || (isset($item['link']) && isset($item['name'])) ) {
+
+								$output .= "<p>\n";
+								
 								if ( $show_thumbnails != false && isset($item['picture']) ) {
 									$img = "<img src='". htmlentities($item['picture']) ."' class='thumbnail alignleft' />\n";
 									if ( isset($item['link']) )
 										$output .= "<a href='". esc_attr($item['link']) ."' class='the_link'>$img</a>\n";
 								}
-								
+
 								// The item link
 								if ( isset($item['link']) && isset($item['name']) )
 									$output .= "<a href='". esc_attr($item['link']) ."' class='the_link'>". $item['name'] ."</a>\n";
 								
-							$output .= "</p>\n";
+								$output .= "</p>\n";
+							}
 								
 							// The item caption
 							if ( isset($item['caption']) ) {
@@ -614,20 +618,13 @@ class ffg {
 							}							
 							
 							if ( $descript != null || $properties != null ) {
-								
-								$output .= "<p>\n";
-														
+																						
 								if ( $descript != null )
-									$output .= "<span class='descript'>". $descript ."</span>\n";
-						
-								if ( $descript != null && $properties != null )
-									$output .= "<br /><br />";
+									$output .= "<p class='descript'>". $descript ."</p>\n";
 
 								if ( $properties != null )
 									$output .= $properties;
-								
-								$output .= "</p>\n";
-								
+																
 							}
 
 						$output .= "</blockquote>\n";
