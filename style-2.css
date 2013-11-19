@@ -45,12 +45,12 @@
 	display: block;
 	margin-bottom: 8px;
 }
-.fb-feed-item blockquote p.caption {
+.fb-feed-item blockquote p.meta {
 	font-size: 0.9em;
 	margin: -15px 0px 0px;
 }
-.fb-feed-item blockquote p.caption,
-.fb-feed-item blockquote p.caption a {
+.fb-feed-item blockquote p.meta,
+.fb-feed-item blockquote p.meta a {
 	color: #4D4D4D;
 }
 #fb-feed .fb-feed-item blockquote p {

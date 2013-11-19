@@ -5,7 +5,7 @@ Donate link: http://www.lucasbonner.com/redirect/donate/facebook-feed-grabber/
 Tags: Facebook, Social Networking
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 0.8.2
+Stable tag: 0.8.4
 License: GPLv2 or Later
 
 Allows you to display the feed of a public page or profile on your website. Requires that you create a Facebook Application.
@@ -168,6 +168,12 @@ Because you have either supplied an invalid App Id & Secret combo or you're tryi
 * Changed the ffg_cache class to be based on static methods and properties.
 * changed format_date() to use WP's function human_time_diff().
 
+= 0.8.4 =
+* Fixed the display of shared events to show the date/time and location.
+
+= 0.8.3 =
+* Fixed the displayed comment count.
+
 = 0.8.2 =
 * Removed call time pass-by-reference for compatibility with PHP 5.4.
 * Add Localization. (Beta)
@@ -242,6 +248,11 @@ Because you have either supplied an invalid App Id & Secret combo or you're tryi
 * Improved plugin text localization. (Feedback desired if you're utilizing localization.)
 * Improved flexibility of the default feed field to accept usernames and feed urls. I also now displays the feed name on the options page.
 
+= 0.8.4 =
+* Fixed the display of shared events to show the date/time and location.
+
+= 0.8.3 =
+* Fixed the displayed comment count.
 
 = 0.8.2 =
 * Removed call time pass-by-reference for compatibility with PHP 5.4.
