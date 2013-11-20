@@ -190,7 +190,7 @@ class ffg_base
 		if ( $cache_feed != 0 ) {
 			
 			// Include ffg_cache class
-			include_once 'caching.php';
+			include_once 'class-cache.php';
 			
 			// Let it do it's magic. (Will return the needed content)
 			return ffg_cache::theMagic($this, $path, ($cache_feed * 60));

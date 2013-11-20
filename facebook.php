@@ -34,31 +34,32 @@ License: GPLv2 or Later
  */
 
 define('FFG_VERSION', '0.9.0');
+define('FFG_PATH', dirname(__FILE__));
 
 // Get our MVC View class
 if ( ! class_exists('MVCview') )
-	include 'mvc-view.php';
+	include 'class-mvc-view.php';
 
 /**
  * Run the settup stuff for the plugin.	
  */
-include_once 'ffg-setup.php';
+include_once 'setup.php';
 
 /**
  * Get the base class for ffg.
  */
-include_once 'ffg-base.php';
+include_once 'class-facebook-base.php';
 
 /**
  * Get the ffg options page stuff if in the admin area.
  */
 if ( is_admin() )
-	include_once 'admin/ffg-admin-setup.php';
+	include_once 'admin/class-admin-setup.php';
 
 /**
  * Hook in ffg widgets.
  */
-include_once 'ffg-widgets.php';
+include_once 'class-widget.php';
 
 /**
  * A class to display a wordpress feed.
@@ -170,7 +171,6 @@ class ffg extends ffg_base
 		// Our output string.
 		// The container will be added at the end.
 		$output = NULL;
-
 
 		// Count the items as we use them.
 		$count = 0;
