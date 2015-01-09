@@ -9,6 +9,10 @@ Retrieve the feed of a *public* Facebook page or profile using the Facebook Grap
 
 The options let you define a default feed that is used anywhere you call the plugin. You may also specify specific feeds to display in different areas.
 
+### Note From the Developer
+
+I haven't had the time needed to invest in this plugin to make it better. I may come back to it in the future if I find a need for it. While this plugin still works I would suggest using the [Custom Facebook Feed](https://wordpress.org/plugins/custom-facebook-feed/) plugin appears to be solid and well liked.
+
 ### Ways to Use
 
 * **Widget** Display a feed using a widget.
